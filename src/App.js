@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import "./App.scss";
 
 function App() {
-  const [username, setUsername] = useState("");
+  const [login, setLogin] = useState("");
   const [password, setPassword] = useState("");
   const [currentUser, setCurrentUser] = useState({});
 
@@ -30,9 +30,9 @@ function App() {
     return accessGroupArray.includes(accessGroup);
   };
 
-  const handleUsername = (e) => {
-    const _username = e.target.value;
-    setUsername(_username);
+  const handleLogin = (e) => {
+    const _login = e.target.value;
+    setLogin(_login);
   };
 
   const handlePassword = (e) => {
@@ -51,7 +51,7 @@ function App() {
       method: "POST",
       credentials: "include",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ username, password }),
+      body: JSON.stringify({ login, password }),
     };
     const response = await fetch("http://localhost:3003/login", requestOptions);
     const _currentUser = await response.json();
@@ -68,7 +68,7 @@ function App() {
       requestOptions
     );
     if (response.ok) {
-      setUsername("");
+      setLogin("");
       setPassword("");
       const _currentUser = await response.json();
       setCurrentUser((prev) => ({ ...prev, ..._currentUser }));
@@ -76,7 +76,7 @@ function App() {
   };
   return (
     <div className="App">
-      {currentUser.username && (
+      {currentUser.login && (
         <>
           <h2>
             Current User: {currentUser.firstName} {currentUser.lastName}
@@ -87,12 +87,12 @@ function App() {
               <fieldset>
                 <legend>Login</legend>
                 <div className="row">
-                  <label htmlFor="username">Name</label>
+                  <label htmlFor="login">Name</label>
                   <input
                     type="text"
-                    id="username"
-                    value={username}
-                    onChange={handleUsername}
+                    id="login"
+                    value={login}
+                    onChange={handleLogin}
                   />
                 </div>
                 <div className="row">
