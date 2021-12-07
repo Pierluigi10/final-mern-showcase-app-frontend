@@ -15,7 +15,24 @@ function App() {
   const [signupFormField_lastName, setSignupFormField_lastName] = useState("");
   const [signupFormField_email, setSignupFormField_email] = useState("");
 
+  const [notYetApprovedUsers, setNotYetApprovedUsers] = useState([]);
+
   const [currentUser, setCurrentUser] = useState({});
+
+  const loadNotYetApprovedUsers = async () => {
+    const requestOptions = {
+      method: "GET",
+      credentials: "include",
+    };
+    const response = await fetch(
+      "http://localhost:3003/notyetapprovedusers",
+      requestOptions
+    );
+    if (response.ok) {
+      const data = await response.json();
+      setNotYetApprovedUsers((prev) => [...data.users]);
+    }
+  };
 
   useEffect(() => {
     (async () => {
@@ -31,6 +48,7 @@ function App() {
         const _currentUser = await response.json();
         setCurrentUser((prev) => ({ ...prev, ..._currentUser }));
       }
+      loadNotYetApprovedUsers();
     })();
   }, []);
 
@@ -68,6 +86,23 @@ function App() {
     const _currentUser = await response.json();
     // console.log(_currentUser);
     setCurrentUser((prev) => ({ ...prev, ..._currentUser }));
+  };
+
+  const handle_approveUserButton = async (id) => {
+    const requestOptions = {
+      method: "POST",
+      credentials: "include",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ id }),
+    };
+    const response = await fetch(
+      "http://localhost:3003/approveuser",
+      requestOptions
+    );
+    if (response.ok) {
+      await response.json();
+      loadNotYetApprovedUsers();
+    }
   };
 
   const handleLogoutButton = async (e) => {
@@ -297,19 +332,38 @@ function App() {
               </div>
             </>
           )}
+
           {currentUserIsInGroup("admins") && (
             <>
               <div className="panel">
                 <h3>Admin Section:</h3>
-                <div>
-                  <button>Create users</button>
-                </div>
-                <div>
-                  <button>Edit users</button>
-                </div>
-                <div>
-                  <button>Delete users</button>
-                </div>
+                <h4>{notYetApprovedUsers.length} Users to Approve:</h4>
+                <table className="minimalistBlack">
+                  <thead>
+                    <tr>
+                      <th>First Name</th>
+                      <th>Last Name</th>
+                      <th></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {notYetApprovedUsers.map((user, index) => {
+                      return (
+                        <tr key={index}>
+                          <td>{user.firstName}</td>
+                          <td>{user.lastName}</td>
+                          <td>
+                            <button
+                              onClick={() => handle_approveUserButton(user._id)}
+                            >
+                              Approve
+                            </button>
+                          </td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
               </div>
             </>
           )}
