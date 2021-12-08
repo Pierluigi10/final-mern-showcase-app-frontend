@@ -11,6 +11,8 @@ function App() {
   const [login, setLogin] = useState("");
   const [password, setPassword] = useState("");
 
+  const[loginFormMessage, setLoginFormMessage] = useState("");
+
   const [signupFormField_login, setSignupFormField_login] = useState("");
   const [signupFormField_password1, setSignupFormField_password1] =
     useState("");
@@ -89,9 +91,14 @@ function App() {
       body: JSON.stringify({ login, password }),
     };
     const response = await fetch("http://localhost:3003/login", requestOptions);
-    const _currentUser = await response.json();
-    // console.log(_currentUser);
-    setCurrentUser((prev) => ({ ...prev, ..._currentUser }));
+    if(!response.ok){
+      setLogin("")
+      setPassword("")
+      setLoginFormMessage("Bad Login");
+    }else{  const _currentUser = await response.json();
+      // console.log(_currentUser);
+      setCurrentUser((prev) => ({ ...prev, ..._currentUser }));}
+  
   };
 
   const handle_approveUserButton = async (id) => {
@@ -209,6 +216,9 @@ function App() {
               <form>
                 <fieldset>
                   <legend>Login</legend>
+                  <div className="loginFormMessage">
+                    {loginFormMessage}
+                  </div>
                   <div className="row">
                     <label htmlFor="login">Name</label>
                     <input

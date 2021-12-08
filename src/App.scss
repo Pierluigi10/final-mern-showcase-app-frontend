@@ -34,6 +34,14 @@ body {
         border: 5px solid #ccc;
         border-radius: 5px;
         padding: 20px;
+        .loginFormMessage {
+          text-align: center;
+          background-color:rgb(165, 19, 19);
+          color: #fff;
+          font-size:1.9rem;
+          font-weight:bold;
+          letter-spacing:0.2;
+        }
         .row {
           display: flex;
           align-content: flex-start;
