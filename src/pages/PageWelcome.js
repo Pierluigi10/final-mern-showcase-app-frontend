@@ -2,17 +2,13 @@ import { useContext } from "react";
 import AppContext from "../AppContext";
 
 const PageWelcome = () => {
-  const { siteStatus, toggleStatus } = useContext(AppContext);
-
+  const { currentUser } = useContext(AppContext);
   return (
     <div>
-      This is the welcome page.
-      <p>
-        The current status is: <span className="highlight">{siteStatus}</span>
-      </p>
-      <p>
-        <button onClick={toggleStatus}>Toggle Status</button>
-      </p>
+      <h1>FINAL MERN Showcase App</h1>
+      <h2>
+        Current User: {currentUser.firstName} {currentUser.lastName}
+      </h2>
     </div>
   );
 };
