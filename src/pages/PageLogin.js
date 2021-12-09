@@ -2,7 +2,7 @@ import { useState, useEffect, useContext } from "react";
 import AppContext from "../AppContext";
 
 const PageLogin = () => {
-  const { currentUser, setCurrentUser, currentUserIsInGroup } =
+  const { currentUser, setCurrentUser, currentUserIsInGroup, backendUrl } =
     useContext(AppContext);
 
   const [login, setLogin] = useState("");
@@ -18,7 +18,7 @@ const PageLogin = () => {
       credentials: "include",
     };
     const response = await fetch(
-      "http://localhost:3003/notyetapprovedusers",
+      `${backendUrl}/notyetapprovedusers`,
       requestOptions
     );
     if (response.ok) {
@@ -33,10 +33,7 @@ const PageLogin = () => {
         method: "GET",
         credentials: "include",
       };
-      const response = await fetch(
-        "http://localhost:3003/currentuser",
-        requestOptions
-      );
+      const response = await fetch(`${backendUrl}/currentuser`, requestOptions);
       if (response.ok) {
         const _currentUser = await response.json();
         setCurrentUser((prev) => ({ ...prev, ..._currentUser }));
@@ -69,7 +66,7 @@ const PageLogin = () => {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ login, password }),
     };
-    const response = await fetch("http://localhost:3003/login", requestOptions);
+    const response = await fetch(`${backendUrl}/login`, requestOptions);
     if (!response.ok) {
       setLogin("");
       setPassword("");
@@ -88,10 +85,7 @@ const PageLogin = () => {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ id }),
     };
-    const response = await fetch(
-      "http://localhost:3003/approveuser",
-      requestOptions
-    );
+    const response = await fetch(`${backendUrl}/approveuser`, requestOptions);
     if (response.ok) {
       await response.json();
       loadNotYetApprovedUsers();
@@ -103,10 +97,7 @@ const PageLogin = () => {
       method: "GET",
       credentials: "include",
     };
-    const response = await fetch(
-      "http://localhost:3003/logout",
-      requestOptions
-    );
+    const response = await fetch(`${backendUrl}/logout`, requestOptions);
     if (response.ok) {
       setLogin("");
       setPassword("");

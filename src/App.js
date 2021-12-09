@@ -10,7 +10,7 @@ import PageRegister from "./pages/PageRegister";
 import PageLogin from "./pages/PageLogin";
 
 function App() {
-  const { setCurrentUser } = useContext(AppContext);
+  const { setCurrentUser,backendUrl } = useContext(AppContext);
 
   useEffect(() => {
     (async () => {
@@ -19,7 +19,7 @@ function App() {
         credentials: "include",
       };
       const response = await fetch(
-        "http://localhost:3003/currentuser",
+      `${backendUrl}/currentuser`,
         requestOptions
       );
       if (response.ok) {

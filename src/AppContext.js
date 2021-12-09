@@ -12,12 +12,15 @@ export const AppProvider = ({ children }) => {
     return accessGroupArray.includes(accessGroup);
   };
 
+  const backendUrl = process.env.REACT_APP_BACKEND_URL;
+
   return (
     <AppContext.Provider
       value={{
         currentUser,
         setCurrentUser,
         currentUserIsInGroup,
+        backendUrl,
       }}
     >
       {children}

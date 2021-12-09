@@ -1,8 +1,9 @@
-import { useState,  useContext } from "react";
+import { useState, useContext } from "react";
 import AppContext from "../AppContext";
 
 const PageRegister = () => {
-  const { setCurrentUser, currentUserIsInGroup } = useContext(AppContext);
+  const { setCurrentUser, currentUserIsInGroup, backendUrl } =
+    useContext(AppContext);
 
   const [signupFormField_login, setSignupFormField_login] = useState("");
   const [signupFormField_password1, setSignupFormField_password1] =
@@ -57,10 +58,7 @@ const PageRegister = () => {
         },
       }),
     };
-    const response = await fetch(
-      "http://localhost:3003/signup",
-      requestOptions
-    );
+    const response = await fetch(`${backendUrl}/signup`, requestOptions);
     if (response.ok) {
       const _currentUser = await response.json();
       setCurrentUser((prev) => ({ ...prev, ..._currentUser }));
