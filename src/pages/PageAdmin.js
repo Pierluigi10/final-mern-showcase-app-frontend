@@ -4,10 +4,12 @@ import AppContext from "../AppContext";
 const PageAdmin = () => {
   const { backendUrl } = useContext(AppContext);
   const [notYetApprovedUsers, setNotYetApprovedUsers] = useState([]);
+  const [approvedUsers, setApprovedUsers] = useState([]);
 
   useEffect(() => {
     (async () => {
       loadNotYetApprovedUsers();
+      loadApprovedUsers();
     })();
   }, []);
 
@@ -22,6 +24,7 @@ const PageAdmin = () => {
     if (response.ok) {
       await response.json();
       loadNotYetApprovedUsers();
+    
     }
   };
 
@@ -37,6 +40,21 @@ const PageAdmin = () => {
     if (response.ok) {
       const data = await response.json();
       setNotYetApprovedUsers((prev) => [...data.users]);
+    }
+  };
+
+  const loadApprovedUsers = async () => {
+    const requestOptions = {
+      method: "GET",
+      credentials: "include",
+    };
+    const response = await fetch(
+      `${process.env.REACT_APP_BACKEND_URL}/users`,
+      requestOptions
+    );
+    if (response.ok) {
+      const data = await response.json();
+      setApprovedUsers(data);
     }
   };
 
@@ -63,6 +81,26 @@ const PageAdmin = () => {
                     Approve
                   </button>
                 </td>
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
+      <h4>{approvedUsers.length} Users:</h4>
+      <table className="minimalistBlack">
+        <thead>
+          <tr>
+            <th>First Name</th>
+            <th>Last Name</th>
+            
+          </tr>
+        </thead>
+        <tbody>
+          {approvedUsers.map((user, index) => {
+            return (
+              <tr key={index}>
+                <td>{user.firstName}</td>
+                <td>{user.lastName}</td>
               </tr>
             );
           })}
