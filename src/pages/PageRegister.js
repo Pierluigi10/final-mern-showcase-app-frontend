@@ -18,11 +18,20 @@ const PageRegister = () => {
   const [passwordsInputType1, setPasswordsInputType1] = useState("password");
   const [passwordsInputType2, setPasswordsInputType2] = useState("password");
 
+  const [loginIsValid, setLoginIsValid] = useState(false);
+  const [emailIsValid, setEmailIsValid] = useState(false);
+
   // SIGNUP FORM FIELD HANDLERS
   const handle_signupFormField_login = (e) => {
-    let login = e.target.value;
-    setSignupFormField_login(login);
+    let _login = e.target.value;
+    if (_login !== "" && _login.length <= 10 && _login.length >= 3) {
+      setLoginIsValid(true);
+    } else {
+      setLoginIsValid(false);
+    }
+    setSignupFormField_login(_login);
   };
+
   const handle_signupFormField_password1 = (e) => {
     let password1 = e.target.value;
     setSignupFormField_password1(password1);
@@ -52,8 +61,13 @@ const PageRegister = () => {
     setSignupFormField_lastName(lastName);
   };
   const handle_signupFormField_email = (e) => {
-    let email = e.target.value;
-    setSignupFormField_email(email);
+    let _email = e.target.value;
+    if (_email !== "" && /(.+)@(.+){2,}\.(.+){2,}/.test(_email)) {
+      setEmailIsValid(true);
+    } else {
+      setEmailIsValid(false);
+    }
+    setSignupFormField_email(_email);
   };
 
   const handle_signupForm_signupButton = async (e) => {
@@ -94,7 +108,7 @@ const PageRegister = () => {
           <form>
             <fieldset>
               <legend>Signup</legend>
-              <div className="row">
+              <div className={"row " + (loginIsValid ? "valid" : "invalid")}>
                 <label htmlFor="signupFormField_login">Login</label>
                 <input
                   type="text"
@@ -102,6 +116,9 @@ const PageRegister = () => {
                   value={signupFormField_login}
                   onChange={handle_signupFormField_login}
                 />
+              </div>
+              <div className={"note " + (loginIsValid ? "valid" : "invalid")}>
+                required, minium 3 characters and maximum 10 characters
               </div>
               <div className="row">
                 <label htmlFor="signupFormField_password1">Password 1</label>
@@ -153,7 +170,7 @@ const PageRegister = () => {
                   onChange={handle_signupFormField_lastName}
                 />
               </div>
-              <div className="row">
+              <div className={"row " + (emailIsValid ? "valid" : "invalid")}>
                 <label htmlFor="signupFormField_email">E-Mail</label>
                 <input
                   type="text"
@@ -161,6 +178,9 @@ const PageRegister = () => {
                   value={signupFormField_email}
                   onChange={handle_signupFormField_email}
                 />
+              </div>
+              <div className={"note " + (emailIsValid ? "valid" : "invalid")}>
+                e.g. xxxx@xxxx.xx
               </div>
               <div className="buttonRow">
                 <button onClick={handle_signupForm_signupButton}>Submit</button>

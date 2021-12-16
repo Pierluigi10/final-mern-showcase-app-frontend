@@ -12,7 +12,6 @@ const PageLogin = () => {
   const [loginFormMessage, setLoginFormMessage] = useState("");
   const [passwordsInputType, setPasswordsInputType] = useState("password");
 
-
   const navigate = useNavigate();
 
   const handleLogin = (e) => {
@@ -82,97 +81,15 @@ const PageLogin = () => {
               value={password}
               onChange={handlePassword}
             />
-             <span className="eyes-icon" onClick={handleShowPasswordButton}>
-                  {passwordsInputType === "password" ? (
-                    <ImEye />
-                  ) : (
-                    <ImEyeBlocked />
-                  )}
-                </span>
+            <span className="eyes-icon" onClick={handleShowPasswordButton}>
+              {passwordsInputType === "password" ? <ImEye /> : <ImEyeBlocked />}
+            </span>
           </div>
           <div className="buttonRow">
             <button onClick={handleLoginButton}>Login</button>
           </div>
         </fieldset>
       </form>
-
-      {/* {currentUserIsInGroup("loggedInUsers") && (
-            <div>
-              <button onClick={handleLogoutButton}>Logout</button>
-            </div>
-          )}
-          {currentUserIsInGroup("loggedOutUsers") && (
-            <div className="panel">Welcome to this site.</div>
-          )}
-          {currentUserIsInGroup("notApprovedUsers") && (
-            <>
-              <div className="panel">
-                <h3>Thank you for registering!</h3>
-                An administrator will approve your account as soon as possible.
-              </div>
-            </>
-          )}
-          {currentUserIsInGroup("members") && (
-            <>
-              <div className="panel">
-                <h3>Current Site News for Members</h3>
-                <p>
-                  Lorem ipsum dolor, sit amet consectetur adipisicing elit.
-                  Neque explicabo voluptate quia asperiores sit! Vel molestiae
-                  labore ratione non dolores? Exercitationem soluta quo id
-                  laboriosam, autem perferendis? Fuga, suscipit ipsa.
-                </p>
-              </div>
-            </>
-          )}
-          {currentUserIsInGroup("contentEditors") && (
-            <>
-              <div className="panel">
-                <h3>Content Editor Section:</h3>
-                <div>
-                  <button>Edit Welcome Page</button>
-                </div>
-                <div>
-                  <button>Create New Page</button>
-                </div>
-              </div>
-            </>
-          )}
-
-          {currentUserIsInGroup("admins") && (
-            <>
-              <div className="panel">
-                <h3>Admin Section:</h3>
-                <h4>{notYetApprovedUsers.length} Users to Approve:</h4>
-                <table className="minimalistBlack">
-                  <thead>
-                    <tr>
-                      <th>First Name</th>
-                      <th>Last Name</th>
-                      <th></th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {notYetApprovedUsers.map((user, index) => {
-                      return (
-                        <tr key={index}>
-                          <td>{user.firstName}</td>
-                          <td>{user.lastName}</td>
-                          <td>
-                            <button
-                              onClick={() => handle_approveUserButton(user._id)}
-                            >
-                              Approve
-                            </button>
-                          </td>
-                        </tr>
-                      );
-                    })}
-                  </tbody>
-                </table>
-              </div>
-            </>
-          )} */}
     </div>
   );
 };
