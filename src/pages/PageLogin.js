@@ -1,6 +1,7 @@
 import { useState, useContext } from "react";
 import AppContext from "../AppContext";
 import { useNavigate } from "react-router-dom";
+import { ImEyeBlocked, ImEye } from "react-icons/im";
 
 const PageLogin = () => {
   const { setCurrentUser, backendUrl } = useContext(AppContext);
@@ -9,6 +10,8 @@ const PageLogin = () => {
   const [password, setPassword] = useState("");
 
   const [loginFormMessage, setLoginFormMessage] = useState("");
+  const [passwordsInputType, setPasswordsInputType] = useState("password");
+
 
   const navigate = useNavigate();
 
@@ -48,33 +51,11 @@ const PageLogin = () => {
     }
   };
 
-  // const handle_approveUserButton = async (id) => {
-  //   const requestOptions = {
-  //     method: "POST",
-  //     credentials: "include",
-  //     headers: { "Content-Type": "application/json" },
-  //     body: JSON.stringify({ id }),
-  //   };
-  //   const response = await fetch(`${backendUrl}/approveuser`, requestOptions);
-  //   if (response.ok) {
-  //     await response.json();
-  //     loadNotYetApprovedUsers();
-  //   }
-  // };
-
-  // const handleLogoutButton = async (e) => {
-  //   const requestOptions = {
-  //     method: "GET",
-  //     credentials: "include",
-  //   };
-  //   const response = await fetch(`${backendUrl}/logout`, requestOptions);
-  //   if (response.ok) {
-  //     setLogin("");
-  //     setPassword("");
-  //     const _currentUser = await response.json();
-  //     setCurrentUser((prev) => ({ ...prev, ..._currentUser }));
-  //   }
-  // };
+  const handleShowPasswordButton = () => {
+    setPasswordsInputType(
+      passwordsInputType === "password" ? "text" : "password"
+    );
+  };
 
   return (
     <div>
@@ -96,11 +77,18 @@ const PageLogin = () => {
           <div className="row">
             <label htmlFor="password">Password</label>
             <input
-              type="password"
+              type={passwordsInputType}
               id="password"
-              onChange={handlePassword}
               value={password}
+              onChange={handlePassword}
             />
+             <span className="eyes-icon" onClick={handleShowPasswordButton}>
+                  {passwordsInputType === "password" ? (
+                    <ImEye />
+                  ) : (
+                    <ImEyeBlocked />
+                  )}
+                </span>
           </div>
           <div className="buttonRow">
             <button onClick={handleLoginButton}>Login</button>
