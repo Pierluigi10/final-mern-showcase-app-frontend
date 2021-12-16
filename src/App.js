@@ -8,9 +8,12 @@ import Nav from "./components/Nav";
 import PageWelcome from "./pages/PageWelcome";
 import PageRegister from "./pages/PageRegister";
 import PageLogin from "./pages/PageLogin";
+import PageLogout from "./pages/PageLogout";
+import PageAdmin from "./pages/PageAdmin";
 
 function App() {
-  const { setCurrentUser,backendUrl } = useContext(AppContext);
+  const { currentUser, setCurrentUser, currentUserIsInGroup, backendUrl } =
+    useContext(AppContext);
 
   useEffect(() => {
     (async () => {
@@ -18,10 +21,7 @@ function App() {
         method: "GET",
         credentials: "include",
       };
-      const response = await fetch(
-      `${backendUrl}/currentuser`,
-        requestOptions
-      );
+      const response = await fetch(`${backendUrl}/currentuser`, requestOptions);
       if (response.ok) {
         const user = await response.json();
         // console.log(user);
@@ -35,14 +35,35 @@ function App() {
 
   return (
     <div className="App">
-      <Nav />
-      <div className="content">
-        <Routes>
-          <Route path="/" element={<PageWelcome />} />
-          <Route path="register" element={<PageRegister />} />
-          <Route path="login" element={<PageLogin />} />
-        </Routes>
-      </div>
+      {currentUser.login && (
+        <>
+          <h1>MERN Showcase App</h1>
+          {currentUserIsInGroup("loggedInUsers") && (
+            <h2>
+              {currentUser.firstName} {currentUser.lastName}
+            </h2>
+          )}
+          <Nav />
+
+          <div className="content">
+            <Routes>
+              <Route path="/" element={<PageWelcome />} />
+              {currentUserIsInGroup("loggedOutUsers") && (
+                <Route path="register" element={<PageRegister />} />
+              )}
+              {currentUserIsInGroup("loggedOutUsers") && (
+                <Route path="login" element={<PageLogin />} />
+              )}
+              {currentUserIsInGroup("admins") && (
+                <Route path="admin" element={<PageAdmin />} />
+              )}
+              {currentUserIsInGroup("loggedInUsers") && (
+                <Route path="logout" element={<PageLogout />} />
+              )}
+            </Routes>
+          </div>
+        </>
+      )}
     </div>
   );
 }

@@ -1,8 +1,9 @@
-import { useState, useEffect, useContext } from "react";
+import { useState, useContext } from "react";
 import AppContext from "../AppContext";
+import { useNavigate } from "react-router-dom";
 
 const PageLogin = () => {
-  const { currentUser, setCurrentUser, currentUserIsInGroup, backendUrl } =
+  const {  setCurrentUser,  backendUrl } =
     useContext(AppContext);
 
   const [login, setLogin] = useState("");
@@ -10,38 +11,7 @@ const PageLogin = () => {
 
   const [loginFormMessage, setLoginFormMessage] = useState("");
 
-  const [notYetApprovedUsers, setNotYetApprovedUsers] = useState([]);
-
-  const loadNotYetApprovedUsers = async () => {
-    const requestOptions = {
-      method: "GET",
-      credentials: "include",
-    };
-    const response = await fetch(
-      `${backendUrl}/notyetapprovedusers`,
-      requestOptions
-    );
-    if (response.ok) {
-      const data = await response.json();
-      setNotYetApprovedUsers((prev) => [...data.users]);
-    }
-  };
-
-  useEffect(() => {
-    (async () => {
-      const requestOptions = {
-        method: "GET",
-        credentials: "include",
-      };
-      const response = await fetch(`${backendUrl}/currentuser`, requestOptions);
-      if (response.ok) {
-        const _currentUser = await response.json();
-        setCurrentUser((prev) => ({ ...prev, ..._currentUser }));
-      }
-      loadNotYetApprovedUsers();
-    })();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  const navigate = useNavigate();
 
   const handleLogin = (e) => {
     const _login = e.target.value;
@@ -75,76 +45,71 @@ const PageLogin = () => {
       const _currentUser = await response.json();
       // console.log(_currentUser);
       setCurrentUser((prev) => ({ ...prev, ..._currentUser }));
+      navigate("/");
     }
   };
 
-  const handle_approveUserButton = async (id) => {
-    const requestOptions = {
-      method: "POST",
-      credentials: "include",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ id }),
-    };
-    const response = await fetch(`${backendUrl}/approveuser`, requestOptions);
-    if (response.ok) {
-      await response.json();
-      loadNotYetApprovedUsers();
-    }
-  };
+  // const handle_approveUserButton = async (id) => {
+  //   const requestOptions = {
+  //     method: "POST",
+  //     credentials: "include",
+  //     headers: { "Content-Type": "application/json" },
+  //     body: JSON.stringify({ id }),
+  //   };
+  //   const response = await fetch(`${backendUrl}/approveuser`, requestOptions);
+  //   if (response.ok) {
+  //     await response.json();
+  //     loadNotYetApprovedUsers();
+  //   }
+  // };
 
-  const handleLogoutButton = async (e) => {
-    const requestOptions = {
-      method: "GET",
-      credentials: "include",
-    };
-    const response = await fetch(`${backendUrl}/logout`, requestOptions);
-    if (response.ok) {
-      setLogin("");
-      setPassword("");
-      const _currentUser = await response.json();
-      setCurrentUser((prev) => ({ ...prev, ..._currentUser }));
-    }
-  };
+  // const handleLogoutButton = async (e) => {
+  //   const requestOptions = {
+  //     method: "GET",
+  //     credentials: "include",
+  //   };
+  //   const response = await fetch(`${backendUrl}/logout`, requestOptions);
+  //   if (response.ok) {
+  //     setLogin("");
+  //     setPassword("");
+  //     const _currentUser = await response.json();
+  //     setCurrentUser((prev) => ({ ...prev, ..._currentUser }));
+  //   }
+  // };
 
   return (
     <div>
-      {currentUser.login && (
-        <>
-          <h1>FINAL MERN Showcase App</h1>
+      <h2>Login Page</h2>
 
-          {currentUserIsInGroup("loggedOutUsers") && (
-            <>
-              <form>
-                <fieldset>
-                  <legend>Login</legend>
-                  <div className="loginFormMessage">{loginFormMessage}</div>
-                  <div className="row">
-                    <label htmlFor="login">Name</label>
-                    <input
-                      type="text"
-                      id="login"
-                      value={login}
-                      onChange={handleLogin}
-                    />
-                  </div>
-                  <div className="row">
-                    <label htmlFor="password">Password</label>
-                    <input
-                      type="password"
-                      id="password"
-                      onChange={handlePassword}
-                      value={password}
-                    />
-                  </div>
-                  <div className="buttonRow">
-                    <button onClick={handleLoginButton}>Login</button>
-                  </div>
-                </fieldset>
-              </form>
-            </>
-          )}
+      <form>
+        <fieldset>
+          <legend>Login</legend>
+          <div className="loginFormMessage">{loginFormMessage}</div>
+          <div className="row">
+            <label htmlFor="login">Name</label>
+            <input
+              type="text"
+              id="login"
+              value={login}
+              onChange={handleLogin}
+            />
+          </div>
+          <div className="row">
+            <label htmlFor="password">Password</label>
+            <input
+              type="password"
+              id="password"
+              onChange={handlePassword}
+              value={password}
+            />
+          </div>
+          <div className="buttonRow">
+            <button onClick={handleLoginButton}>Login</button>
+          </div>
+        </fieldset>
+      </form>
 
-          {currentUserIsInGroup("loggedInUsers") && (
+      {/* {currentUserIsInGroup("loggedInUsers") && (
             <div>
               <button onClick={handleLogoutButton}>Logout</button>
             </div>
@@ -220,9 +185,7 @@ const PageLogin = () => {
                 </table>
               </div>
             </>
-          )}
-        </>
-      )}
+          )} */}
     </div>
   );
 };

@@ -73,6 +73,7 @@ const PageRegister = () => {
 
   return (
     <div>
+      <h2>Signup Form</h2>
       {currentUserIsInGroup("loggedOutUsers") && (
         <>
           <form>
