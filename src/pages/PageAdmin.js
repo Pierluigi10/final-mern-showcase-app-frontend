@@ -11,6 +11,7 @@ const PageAdmin = () => {
       loadNotYetApprovedUsers();
       loadApprovedUsers();
     })();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handle_approveUserButton = async (id) => {
@@ -46,7 +47,7 @@ const PageAdmin = () => {
       credentials: "include",
     };
     const response = await fetch(
-      `${process.env.REACT_APP_BACKEND_URL}/notyetapprovedusers`,
+      `${backendUrl}/notyetapprovedusers`,
       requestOptions
     );
     if (response.ok) {
@@ -61,7 +62,7 @@ const PageAdmin = () => {
       credentials: "include",
     };
     const response = await fetch(
-      `${process.env.REACT_APP_BACKEND_URL}/users`,
+      `${backendUrl}/users`,
       requestOptions
     );
     if (response.ok) {
