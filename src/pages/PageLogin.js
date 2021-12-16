@@ -3,8 +3,7 @@ import AppContext from "../AppContext";
 import { useNavigate } from "react-router-dom";
 
 const PageLogin = () => {
-  const {  setCurrentUser,  backendUrl } =
-    useContext(AppContext);
+  const { setCurrentUser, backendUrl } = useContext(AppContext);
 
   const [login, setLogin] = useState("");
   const [password, setPassword] = useState("");

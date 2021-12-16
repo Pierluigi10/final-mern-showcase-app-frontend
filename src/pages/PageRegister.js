@@ -1,5 +1,6 @@
 import { useState, useContext } from "react";
 import AppContext from "../AppContext";
+import { ImEyeBlocked, ImEye } from "react-icons/im";
 
 const PageRegister = () => {
   const { setCurrentUser, currentUserIsInGroup, backendUrl } =
@@ -14,6 +15,8 @@ const PageRegister = () => {
     useState("");
   const [signupFormField_lastName, setSignupFormField_lastName] = useState("");
   const [signupFormField_email, setSignupFormField_email] = useState("");
+  const [passwordsInputType1, setPasswordsInputType1] = useState("password");
+  const [passwordsInputType2, setPasswordsInputType2] = useState("password");
 
   // SIGNUP FORM FIELD HANDLERS
   const handle_signupFormField_login = (e) => {
@@ -24,9 +27,21 @@ const PageRegister = () => {
     let password1 = e.target.value;
     setSignupFormField_password1(password1);
   };
+
+  const handleShowPasswordButton1 = () => {
+    setPasswordsInputType1(
+      passwordsInputType1 === "password" ? "text" : "password"
+    );
+  };
   const handle_signupFormField_password2 = (e) => {
     let password2 = e.target.value;
     setSignupFormField_password2(password2);
+  };
+
+  const handleShowPasswordButton2 = () => {
+    setPasswordsInputType2(
+      passwordsInputType2 === "password" ? "text" : "password"
+    );
   };
   const handle_signupFormField_firstName = (e) => {
     let firstName = e.target.value;
@@ -91,20 +106,34 @@ const PageRegister = () => {
               <div className="row">
                 <label htmlFor="signupFormField_password1">Password 1</label>
                 <input
-                  type="password"
+                  type={passwordsInputType1}
                   id="signupFormField_password1"
                   value={signupFormField_password1}
                   onChange={handle_signupFormField_password1}
                 />
+                <span className="eyes-icon" onClick={handleShowPasswordButton1}>
+                  {passwordsInputType1 === "password" ? (
+                    <ImEye />
+                  ) : (
+                    <ImEyeBlocked />
+                  )}
+                </span>
               </div>
               <div className="row">
-                <label htmlFor="signupFormField_password2">Password 2</label>
+                <label htmlFor="signupFormField_password2">Password 1</label>
                 <input
-                  type="password"
+                  type={passwordsInputType2}
                   id="signupFormField_password2"
                   value={signupFormField_password2}
                   onChange={handle_signupFormField_password2}
                 />
+                <span className="eyes-icon" onClick={handleShowPasswordButton2}>
+                  {passwordsInputType2 === "password" ? (
+                    <ImEye />
+                  ) : (
+                    <ImEyeBlocked />
+                  )}
+                </span>
               </div>
               <div className="row">
                 <label htmlFor="signupFormField_firstName">First Name</label>
